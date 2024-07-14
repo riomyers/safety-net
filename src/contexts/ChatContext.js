@@ -12,7 +12,7 @@ export const ChatProvider = ({ children }) => {
 	// Fetch the initial chat status from the backend
 	const fetchChatStatus = async () => {
 	  try {
-		const response = await axios.get('http://localhost:8000/api/chat/status');
+		const response = await axios.get('https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/chat/status');
 		setIsChatEnabled(response.data.isChatEnabled);
 	  } catch (error) {
 		console.error('Error fetching chat status:', error);
@@ -29,7 +29,7 @@ export const ChatProvider = ({ children }) => {
 
   const toggleChat = async (status) => {
 	try {
-	  await axios.post('http://localhost:8000/api/chat/status', { isChatEnabled: status });
+	  await axios.post('https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/chat/status', { isChatEnabled: status });
 	  setIsChatEnabled(status);
 	  toast.success(`Chat ${status ? 'enabled' : 'disabled'} successfully!`);
 	} catch (error) {

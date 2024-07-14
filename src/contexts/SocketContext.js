@@ -8,7 +8,7 @@ export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const newSocket = io('http://localhost:8000', {
+    const newSocket = io('https://safety-net-innov8r-1f5b89760363.herokuapp.com', {
       auth: {
         token: localStorage.getItem('token')
       }

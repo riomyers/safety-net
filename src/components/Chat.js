@@ -15,7 +15,7 @@ const Chat = ({ currentUser, selectedUser, onClose, inputRef }) => {
 
     const fetchMessages = async () => {
       try {
-        const res = await axios.get('http://localhost:8000/api/messages', {
+        const res = await axios.get('https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/messages', {
           params: {
             senderId: currentUser._id,
             receiverId: selectedUser._id
@@ -71,7 +71,7 @@ const Chat = ({ currentUser, selectedUser, onClose, inputRef }) => {
     };
 
     try {
-      await axios.post('http://localhost:8000/api/messages', messageData, {
+      await axios.post('https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/messages', messageData, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'

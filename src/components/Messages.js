@@ -9,7 +9,7 @@ const Messages = ({ currentUser }) => {
   useEffect(() => {
     const fetchConversations = async () => {
       try {
-        const res = await axios.get('http://localhost:8000/api/messages/conversations', {
+        const res = await axios.get('https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/messages/conversations', {
           headers: {
             'x-auth-token': localStorage.getItem('token')
           }

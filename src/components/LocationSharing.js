@@ -19,7 +19,7 @@ const LocationSharing = ({ userId, setCurrentLocation }) => {
               'x-auth-token': localStorage.getItem('token')
             }
           };
-          const res = await axios.put('http://localhost:8000/api/users/location', {
+          const res = await axios.put('https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/users/location', {
             lat: latitude,
             lng: longitude
           }, config);

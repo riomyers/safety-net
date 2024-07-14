@@ -16,7 +16,7 @@ const NearbyUsers = ({
 
   const fetchNearbyUsers = async (lat, lng) => {
     try {
-      const res = await axios.get('http://localhost:8000/api/auth/nearby', {
+      const res = await axios.get('https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/auth/nearby', {
         params: {
           lat: lat,
           lng: lng

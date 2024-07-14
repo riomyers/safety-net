@@ -54,7 +54,7 @@ const Home = () => {
           'Authorization': `Bearer ${authState.token}`,
         },
       };
-      await axios.put('http://localhost:8000/api/auth/location', {
+      await axios.put('https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/auth/location', {
         lat: latitude,
         lng: longitude,
       }, config);
@@ -74,7 +74,7 @@ const Home = () => {
           'Authorization': `Bearer ${authState.token}`,
         },
       };
-      await axios.put('http://localhost:8000/api/auth/locationHidden', { locationHidden: hidden }, config);
+      await axios.put('https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/auth/locationHidden', { locationHidden: hidden }, config);
       setLocationShared(!hidden); // Update the state to reflect the change
       if (socket) {
         socket.emit('locationUpdated'); // Emit a socket event for location update
@@ -152,7 +152,7 @@ const Home = () => {
 
   const fetchNearbyUsers = useCallback(async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/auth/nearby', {
+      const res = await axios.get('https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/auth/nearby', {
         headers: {
           'Authorization': `Bearer ${authState.token}`
         }
@@ -196,7 +196,7 @@ const Home = () => {
   useEffect(() => {
     const fetchUnreadMessages = async () => {
       try {
-        const res = await axios.get('http://localhost:8000/api/messages/unread', {
+        const res = await axios.get('https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/messages/unread', {
           headers: {
             'Authorization': `Bearer ${authState.token}`
           }
@@ -231,7 +231,7 @@ const Home = () => {
         } else {
           // Mark message as read in the backend
           try {
-            await axios.put(`http://localhost:8000/api/messages/mark-read/${message.sender}`, {}, {
+            await axios.put(`https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/messages/mark-read/${message.sender}`, {}, {
               headers: {
                 'Authorization': `Bearer ${authState.token}`
               }
@@ -266,7 +266,7 @@ const Home = () => {
       if (unreadMessages[user._id] > 0) {
         // Mark messages as read in the backend
         try {
-          await axios.put(`http://localhost:8000/api/messages/mark-read/${user._id}`, {}, {
+          await axios.put(`https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/messages/mark-read/${user._id}`, {}, {
             headers: {
               'Authorization': `Bearer ${authState.token}`
             }

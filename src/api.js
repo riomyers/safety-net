@@ -10,7 +10,7 @@ export const updateProfile = async (profileData) => {
         'Authorization': `Bearer ${token}`
       }
     };
-    const res = await axios.put('http://localhost:8000/api/auth/profile', profileData, config);
+    const res = await axios.put('https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/auth/profile', profileData, config);
     return res.data;
   } catch (err) {
     console.error('Error updating profile:', err);

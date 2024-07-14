@@ -28,7 +28,7 @@ const Login = () => {
             'Content-Type': 'application/json',
           },
         };
-        const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
+        const API_URL = process.env.REACT_APP_API_URL || 'https://safety-net-innov8r-1f5b89760363.herokuapp.com/api';
         const res = await axios.post(`${API_URL}/auth/login`, values, config);
 
         // Ensure token is stored in localStorage

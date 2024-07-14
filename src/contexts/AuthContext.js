@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
       if (authState.token) {
         axios.defaults.headers.common['Authorization'] = `Bearer ${authState.token}`;
         try {
-          const res = await axios.get('http://localhost:8000/api/auth');
+          const res = await axios.get('https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/auth');
           setAuthState({ isAuthenticated: true, user: res.data, token: authState.token });
         } catch (err) {
           console.error(err);

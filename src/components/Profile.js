@@ -68,7 +68,7 @@ const Profile = () => {
           locationDistance: locationDistance * 1000, // Convert kilometers to meters
         });
 
-        const resProfile = await axios.put('http://localhost:8000/api/auth/profile', profileBody, config);
+        const resProfile = await axios.put('https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/auth/profile', profileBody, config);
 
         if (resProfile.data) {
           updateProfile(resProfile.data);
@@ -87,7 +87,7 @@ const Profile = () => {
 
   const handleResetPassword = async () => {
     try {
-      await axios.post('http://localhost:8000/api/auth/reset-password', { email: formik.values.email });
+      await axios.post('https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/auth/reset-password', { email: formik.values.email });
       toast.success('Password reset link sent to your email');
     } catch (err) {
       console.error('Error sending password reset link:', err);

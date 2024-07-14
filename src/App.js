@@ -27,7 +27,7 @@ function App() {
       if (token) {
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         try {
-          const res = await axios.get('http://localhost:8000/api/auth');
+          const res = await axios.get('https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/auth');
           setAuthState({ isAuthenticated: true, user: res.data, token });
         } catch (err) {
           console.error(err);
@@ -67,7 +67,7 @@ function App() {
       const watchId = navigator.geolocation.watchPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          axios.put('http://localhost:8000/api/auth/location', {
+          axios.put('https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/auth/location', {
             userId: authState.user._id,
             lat: latitude,
             lng: longitude,
