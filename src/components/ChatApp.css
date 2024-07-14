@@ -1,0 +1,22 @@
+.chat-app {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 300px; /* Adjust width as needed */
+  border-right: 1px solid #ddd;
+  overflow-y: auto;
+}
+
+.chat-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chat-placeholder {
+  text-align: center;
+  color: #999;
+}

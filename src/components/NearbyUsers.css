@@ -1,0 +1,48 @@
+.nearby-users-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 25px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  padding: 8px;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  margin-bottom: 10px;
+  border-radius: 5px;
+  width: 200px;
+  text-align: center;
+  position: relative; /* Ensure the unread badge can be positioned absolutely */
+}
+
+.nearby-user-btn {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+  width: 100%; /* Ensure the button takes full width of the li */
+}
+
+.nearby-user-btn .unread-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  font-size: 0.8rem;
+  background-color: #ff0000;
+  color: #ffffff;
+  border-radius: 5px; /* Changed from 50% to 5px to make it square */
+  padding: 2px 5px;
+}
+
+.nearby-user-btn:hover {
+  background-color: #000;
+}

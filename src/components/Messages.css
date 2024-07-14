@@ -1,0 +1,37 @@
+.messages-page {
+  padding: 20px;
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+.messages-page h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.messages-page ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.messages-page li {
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #1e1e1e;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.messages-page li:hover {
+  background-color: #333;
+}
+
+.messages-page a {
+  color: #e0e0e0;
+  text-decoration: none;
+}
+
+.messages-page a:hover {
+  text-decoration: underline;
+}

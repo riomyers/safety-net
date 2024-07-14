@@ -1,0 +1,35 @@
+.alert-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.alert-modal-content {
+  background: white;
+  padding: 2em;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  color: #000;
+}
+
+.alert-modal-button {
+  margin-top: 1em;
+  padding: 0.5em 1em;
+  border: none;
+  background: #d9534f;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.alert-modal-button:hover {
+  background: #c9302c;
+}

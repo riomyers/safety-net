@@ -1,0 +1,230 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: #121212;
+  color: #e0e0e0;
+  padding: 20px;
+}
+
+.nav-bar {
+  width: 100%;
+  background-color: #333;
+  color: #fff;
+  padding: 10px 0;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.nav-list {
+  list-style: none;
+  display: flex;
+  justify-content: space-around;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-list li {
+  margin: 0;
+  padding: 0;
+}
+
+.nav-list a,
+.btn-link {
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 20px;
+  display: block;
+  transition: background-color 0.3s ease;
+}
+
+.nav-list a:hover,
+.btn-link:hover {
+  background-color: #555;
+}
+
+.app-header {
+  margin-bottom: 20px;
+}
+
+.app-name {
+  font-size: 4rem;
+  margin-bottom: 10px;
+}
+
+.app-description {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  max-width: 600px;
+}
+
+.welcome-message {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.auth-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 300px; /* Ensure buttons are not too wide */
+}
+
+.auth-buttons .btn,
+.share-location-btn,
+.emergency-btn,
+.show-me-btn {
+  padding: 15px 20px; /* Increase padding for better usability */
+  border: none;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+  font-size: 1rem;
+  width: 100%;
+  max-width: 300px; /* Ensure buttons have equal length */
+  box-sizing: border-box;
+}
+
+.location-sharing-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Adds spacing between buttons */
+}
+
+.wide-btn {
+  width: 100%; /* Makes the button take full width */
+  padding: 10px; /* Adds padding for better appearance */
+  font-size: 16px; /* Adjust font size for better readability */
+  text-align: center; /* Center aligns the text */
+  border: none; /* Removes default border */
+  background-color: #007bff; /* Background color */
+  color: white; /* Text color */
+  cursor: pointer; /* Pointer cursor on hover */
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s ease; /* Transition for hover effect */
+  min-width: 300px;
+}
+
+.wide-btn:hover {
+  background-color: #0056b3; /* Darker background color on hover */
+}
+
+.auth-buttons .btn {
+  background-color: #007bff;
+}
+
+.auth-buttons .btn:hover {
+  background-color: #0056b3;
+}
+
+.share-location-btn {
+  background-color: #007bff;
+}
+
+.share-location-btn:hover {
+  background-color: #0056b3;
+}
+
+.show-me-btn {
+  background-color: #28a745; /* Green color for Show Me on the Map button */
+}
+
+.show-me-btn:hover {
+  background-color: #218838; /* Darker green on hover */
+}
+
+.emergency-btn {
+  background-color: #ff0000; /* Red color for Emergency button */
+}
+
+.emergency-btn:hover {
+  background-color: #cc0000; /* Darker red on hover */
+}
+
+.leaflet-container {
+  width: 100%;
+  max-width: 800px;
+  height: 400px;
+  margin-top: 20px;
+  margin-bottom: 20px; /* Add margin below the map */
+  border-radius: 8px;
+}
+
+.nearby-users {
+  text-align: center;
+}
+
+.nearby-users h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.nearby-users ul {
+  list-style: none;
+  padding: 0;
+}
+
+.nearby-users li {
+  padding: 10px;
+  margin-bottom: 5px;
+  background-color: #1e1e1e;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.nearby-users li:hover {
+  background-color: #333;
+}
+
+/* Chat Disabled Message */
+.chat-disabled-message {
+  background-color: #000;
+  box-shadow: black;
+  color: #ddd;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.chat-disabled-message a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.chat-disabled-message a:hover {
+  text-decoration: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .app-name {
+    font-size: 3rem;
+  }
+
+  .app-description {
+    font-size: 1rem;
+  }
+
+  .auth-buttons .btn,
+  .share-location-btn,
+  .emergency-btn,
+  .show-me-btn {
+    font-size: 0.9rem;
+  }
+
+  .leaflet-container {
+    height: 300px;
+  }
+}
