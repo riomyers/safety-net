@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import './Register.css'; // Assuming you have a CSS file for styling
+import './Register.css';
 import { toast } from 'react-toastify';
 
 const Register = () => {
