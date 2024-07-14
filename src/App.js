@@ -68,9 +68,12 @@ function App() {
         (position) => {
           const { latitude, longitude } = position.coords;
           axios.put('https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/auth/location', {
-            userId: authState.user._id,
             lat: latitude,
             lng: longitude,
+          }, {
+            headers: {
+              'Authorization': `Bearer ${authState.token}`
+            }
           });
           socket.emit('updateLocation', { userId: authState.user._id, lat: latitude, lng: longitude });
         },
@@ -90,7 +93,7 @@ function App() {
     } else {
       console.error('Geolocation is not supported by this browser or user is not authenticated.');
     }
-  }, [authState.user, socket]);
+  }, [authState.user, authState.token, socket]);
 
   const logout = () => {
     localStorage.removeItem('token');
@@ -123,7 +126,7 @@ function App() {
               {!authState.isAuthenticated && <Route path="/register" element={<Register />} />}
               {!authState.isAuthenticated && <Route path="/login" element={<Login />} />}
               {authState.isAuthenticated && <Route path="/profile" element={<Profile currentUser={authState.user} />} />}
-              {authState.isAuthenticated && <Route path="/chat/*" element={<ChatApp currentUser={authState.user} currentLocation={shareLocation} />} />}
+              {authState.isAuthenticated && <Route path="/chat/*" element={<ChatApp currentUser={authState.user} />} />}
               <Route path="/reset-password-request" element={<PasswordResetRequest />} />
               <Route path="/reset-password/:token" element={<PasswordReset />} />
               <Route path="*" element={<Navigate to={authState.isAuthenticated ? "/" : "/login"} />} />
