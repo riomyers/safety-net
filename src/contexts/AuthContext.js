@@ -16,10 +16,10 @@ export const AuthProvider = ({ children }) => {
       if (authState.token) {
         api.defaults.headers.common['Authorization'] = `Bearer ${authState.token}`;
         try {
-          const res = await api.get('/api/auth');
+          const res = await api.get('/auth');
           setAuthState({ isAuthenticated: true, user: res.data, token: authState.token });
         } catch (err) {
-          console.error(err);
+          console.error('Fetch user error:', err);
           setAuthState({ isAuthenticated: false, user: null, token: null });
           localStorage.removeItem('token');
         }
@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     try {
-      const res = await api.post('/api/auth/login', { username, password });
+      const res = await api.post('/auth/login', { username, password });
       const { token, user } = res.data;
       localStorage.setItem('token', token);
       setAuthState({ isAuthenticated: true, user, token });

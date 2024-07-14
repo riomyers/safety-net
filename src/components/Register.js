@@ -38,12 +38,18 @@ const Register = () => {
         toast.success('Registration successful!');
         navigate('/login');
       } catch (err) {
-        if (err.response && err.response.data.errors) {
-          err.response.data.errors.forEach(error => {
-            toast.error(error.msg);
-          });
+        if (err.response) {
+          if (err.response.data.errors) {
+            err.response.data.errors.forEach(error => {
+              toast.error(error.msg);
+            });
+          } else if (err.response.data.msg) {
+            toast.error(err.response.data.msg);
+          } else {
+            toast.error('Registration failed. Please try again.');
+          }
         } else {
-          toast.error('Registration failed. Please try again.');
+          toast.error('Network error. Please try again.');
         }
       }
     },
