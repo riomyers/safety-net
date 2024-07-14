@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { Route, Routes, Link, Navigate, useNavigate } from 'react-router-dom';
 import Register from './components/Register';
 import Login from './components/Login';
@@ -16,10 +16,12 @@ import { useSocket } from './contexts/SocketContext';
 import { ChatProvider } from './contexts/ChatContext';
 import { EmergencyAlertProvider } from './contexts/EmergencyAlertContext';
 
-function App() {
+const App = () => {
   const { authState, setAuthState } = useAuth();
   const socket = useSocket();
   const navigate = useNavigate();
+  const [lastKnownPosition, setLastKnownPosition] = useState(null);
+  const distanceThreshold = 10; // Minimum distance in meters for location update
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -62,20 +64,41 @@ function App() {
     };
   }, []);
 
+  const haversineDistance = (coords1, coords2) => {
+    const toRad = (x) => (x * Math.PI) / 180;
+    const R = 6371e3; // Radius of the Earth in meters
+    const lat1 = toRad(coords1.lat);
+    const lat2 = toRad(coords2.lat);
+    const deltaLat = toRad(coords2.lat - coords1.lat);
+    const deltaLon = toRad(coords2.lng - coords1.lng);
+
+    const a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+              Math.cos(lat1) * Math.cos(lat2) *
+              Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return R * c;
+  };
+
   const shareLocation = useCallback(() => {
     if (navigator.geolocation && authState.user) {
       const watchId = navigator.geolocation.watchPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          axios.put('https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/auth/location', {
-            lat: latitude,
-            lng: longitude,
-          }, {
-            headers: {
-              'Authorization': `Bearer ${authState.token}`
-            }
-          });
-          socket.emit('updateLocation', { userId: authState.user._id, lat: latitude, lng: longitude });
+          const newPosition = { lat: latitude, lng: longitude };
+
+          if (!lastKnownPosition || haversineDistance(lastKnownPosition, newPosition) >= distanceThreshold) {
+            setLastKnownPosition(newPosition);
+            axios.put('https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/auth/location', {
+              lat: latitude,
+              lng: longitude,
+            }, {
+              headers: {
+                'Authorization': `Bearer ${authState.token}`
+              }
+            });
+            socket.emit('updateLocation', { userId: authState.user._id, lat: latitude, lng: longitude });
+          }
         },
         (error) => {
           console.error('Error getting user location:', error);
@@ -93,7 +116,7 @@ function App() {
     } else {
       console.error('Geolocation is not supported by this browser or user is not authenticated.');
     }
-  }, [authState.user, authState.token, socket]);
+  }, [authState.user, authState.token, lastKnownPosition, socket]);
 
   const logout = () => {
     localStorage.removeItem('token');
@@ -137,6 +160,6 @@ function App() {
       </EmergencyAlertProvider>
     </ChatProvider>
   );
-}
+};
 
 export default App;
