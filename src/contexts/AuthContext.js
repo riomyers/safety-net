@@ -1,6 +1,6 @@
 // src/contexts/AuthContext.js
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import api from '../api';
 
 const AuthContext = createContext();
 
@@ -14,9 +14,9 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       if (authState.token) {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${authState.token}`;
+        api.defaults.headers.common['Authorization'] = `Bearer ${authState.token}`;
         try {
-          const res = await axios.get('https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/auth');
+          const res = await api.get('/api/auth');
           setAuthState({ isAuthenticated: true, user: res.data, token: authState.token });
         } catch (err) {
           console.error(err);
@@ -24,12 +24,30 @@ export const AuthProvider = ({ children }) => {
           localStorage.removeItem('token');
         }
       } else {
-        delete axios.defaults.headers.common['Authorization'];
+        delete api.defaults.headers.common['Authorization'];
       }
     };
 
     fetchUser();
   }, [authState.token]);
+
+  const login = async (username, password) => {
+    try {
+      const res = await api.post('/api/auth/login', { username, password });
+      const { token, user } = res.data;
+      localStorage.setItem('token', token);
+      setAuthState({ isAuthenticated: true, user, token });
+    } catch (err) {
+      console.error('Login error:', err);
+      throw err;
+    }
+  };
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    setAuthState({ isAuthenticated: false, user: null, token: null });
+    delete api.defaults.headers.common['Authorization'];
+  };
 
   const updateProfile = (updatedUser) => {
     setAuthState((prevState) => ({
@@ -39,7 +57,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ authState, setAuthState, updateProfile }}>
+    <AuthContext.Provider value={{ authState, setAuthState, login, logout, updateProfile }}>
       {children}
     </AuthContext.Provider>
   );
