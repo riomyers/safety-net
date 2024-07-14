@@ -354,6 +354,9 @@ const Home = () => {
             <button onClick={triggerAlert} className="wide-btn emergency-btn">
               Emergency
             </button>
+            <button className="wide-btn alert-police-btn" disabled style={{ backgroundColor: 'blue', color: 'white', border: '2px solid red' }}>
+              Alert Police
+            </button>
             {locationShared && (
               <button onClick={hideLocation} className="wide-btn hide-location-btn">
                 Hide Location
