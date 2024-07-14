@@ -59,7 +59,7 @@ const Home = () => {
         lng: longitude,
       }, config);
       if (socket) {
-        socket.emit('locationUpdated');
+        socket.emit('locationUpdated'); // Emit a socket event for location update
       }
     } catch (err) {
       console.error('Error updating location:', err);
@@ -75,9 +75,9 @@ const Home = () => {
         },
       };
       await axios.put('https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/auth/locationHidden', { locationHidden: hidden }, config);
-      setLocationShared(!hidden);
+      setLocationShared(!hidden); // Update the state to reflect the change
       if (socket) {
-        socket.emit('locationUpdated');
+        socket.emit('locationUpdated'); // Emit a socket event for location update
       }
     } catch (err) {
       console.error('Error updating location hidden status:', err);
@@ -94,7 +94,7 @@ const Home = () => {
           localStorage.setItem('locationShared', true);
           localStorage.setItem('currentLocation', JSON.stringify({ lat: latitude, lng: longitude }));
           await updateLocation(latitude, longitude);
-          await updateLocationHidden(false);
+          await updateLocationHidden(false); // Make the user visible again
 
           if (userInitiated) {
             toast.success('Location acquired successfully.');
@@ -104,7 +104,7 @@ const Home = () => {
           console.error('Geolocation error:', err);
           if (retryCount > 0) {
             console.log(`Retrying... (${retryCount} attempts left)`);
-            setTimeout(() => getPosition(retryCount - 1, delay * 2), delay);
+            setTimeout(() => getPosition(retryCount - 1, delay * 2), delay); // Exponential backoff
           } else {
             if (userInitiated) {
               toast.error('Failed to acquire location. Please try again later.');
@@ -113,7 +113,7 @@ const Home = () => {
         },
         {
           enableHighAccuracy: true,
-          timeout: 10000,
+          timeout: 10000, // Increase the timeout duration (in milliseconds)
           maximumAge: 0
         }
       );
@@ -132,7 +132,7 @@ const Home = () => {
           if (userInitiated) {
             alert('Location sharing has ended.');
           }
-          updateLocationHidden(true);
+          updateLocationHidden(true); // Hide the user again
         }, duration * 1000);
       }
     } else {
@@ -147,7 +147,7 @@ const Home = () => {
     if (watcherRef) {
       navigator.geolocation.clearWatch(watcherRef);
     }
-    await updateLocationHidden(true);
+    await updateLocationHidden(true); // Call the function to update the hidden status
   }, [updateLocationHidden]);
 
   const fetchNearbyUsers = useCallback(async () => {
@@ -158,7 +158,7 @@ const Home = () => {
         }
       });
       if (currentUser) {
-        setNearbyUsers(res.data.filter(user => user._id !== currentUser._id));
+        setNearbyUsers(res.data.filter(user => user._id !== currentUser._id)); // Filter out the current user
       } else {
         setNearbyUsers(res.data);
       }
@@ -177,7 +177,7 @@ const Home = () => {
     }
 
     if (savedLocationShared) {
-      requestLocation(0, 3, false);
+      requestLocation(0, 3, false); // Initial load should not show user messages
     }
 
     const currentWatcherRef = locationWatcherRef.current;
@@ -196,22 +196,20 @@ const Home = () => {
   useEffect(() => {
     const fetchUnreadMessages = async () => {
       try {
-        const res = await axios.get('https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/messages/unread', {
-          headers: {
-            'Authorization': `Bearer ${authState.token}`
-          }
-        });
-        setUnreadMessages(res.data);
-      } catch (err) {
-        console.error('Error fetching unread messages:', err);
-        if (err.response) {
-          console.error('Server Error:', err.response.data);
-        } else if (err.request) {
-          console.error('Network Error:', err.request);
-        } else {
-          console.error('Error:', err.message);
+        if (authState.token) { // Ensure token is present
+          const res = await axios.get('https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/messages/unread', {
+            headers: {
+              'Authorization': `Bearer ${authState.token}`
+            }
+          });
+          setUnreadMessages(res.data);
         }
-        toast.error('Error fetching unread messages.');
+      } catch (err) {
+        if (err.response && err.response.status === 401) {
+          console.error('Unauthorized request: ', err.response.data);
+        } else {
+          console.error('Error fetching unread messages:', err);
+        }
       }
     };
 
@@ -219,7 +217,7 @@ const Home = () => {
 
     if (socket) {
       socket.on('connect', () => {
-        fetchUnreadMessages();
+        fetchUnreadMessages(); // Fetch unread messages on socket connection
       });
 
       socket.on('disconnect', () => {
@@ -237,6 +235,7 @@ const Home = () => {
             [message.sender]: (prevUnreadMessages[message.sender] || 0) + 1
           }));
         } else {
+          // Mark message as read in the backend
           try {
             await axios.put(`https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/messages/mark-read/${message.sender}`, {}, {
               headers: {
@@ -249,7 +248,7 @@ const Home = () => {
         }
       });
 
-      socket.on('locationUpdated', fetchNearbyUsers);
+      socket.on('locationUpdated', fetchNearbyUsers); // Fetch nearby users on location update
 
       return () => {
         socket.off('connect');
@@ -271,12 +270,14 @@ const Home = () => {
     if (isChatEnabled) {
       setSelectedUser(user);
       if (unreadMessages[user._id] > 0) {
+        // Mark messages as read in the backend
         try {
           await axios.put(`https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/messages/mark-read/${user._id}`, {}, {
             headers: {
               'Authorization': `Bearer ${authState.token}`
             }
           });
+          // Update unread messages in the state
           setUnreadMessages((prevUnreadMessages) => ({
             ...prevUnreadMessages,
             [user._id]: 0
@@ -286,6 +287,7 @@ const Home = () => {
         }
       }
 
+      // Focus on the chat input field
       if (chatInputRef.current) {
         chatInputRef.current.focus();
       }
@@ -367,8 +369,8 @@ const Home = () => {
             currentLocation={currentLocation} 
             onSelectUser={handleUserSelect} 
             unreadMessages={unreadMessages}
-            locationShared={locationShared}
-            isChatEnabled={isChatEnabled}
+            locationShared={locationShared} // Pass the locationShared prop
+            isChatEnabled={isChatEnabled} // Pass the isChatEnabled prop
           />
           {locationShared && selectedUser && (
             <Chat 
