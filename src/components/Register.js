@@ -32,7 +32,7 @@ const Register = () => {
           },
         };
         const { name, email, password } = values;
-        const body = JSON.stringify({ name, email, password }); // Ensure the password is correctly sent
+        const body = JSON.stringify({ name, email, password });
         const API_URL = process.env.REACT_APP_API_URL || 'https://safety-net-innov8r-1f5b89760363.herokuapp.com/api';
         await axios.post(`${API_URL}/auth/register`, body, config);
         toast.success('Registration successful!');
