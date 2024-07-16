@@ -194,6 +194,10 @@
   margin-top: 20px;
 }
 
+.group-details h2{
+  margin-bottom: 20px;
+}
+
 /* Loading and error message styling */
 .loading,
 .error {
