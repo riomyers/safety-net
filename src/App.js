@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { Route, Routes, Link, Navigate, useNavigate } from 'react-router-dom';
 import Register from './components/Register';
 import Login from './components/Login';
@@ -7,7 +7,7 @@ import Profile from './components/Profile';
 import PasswordResetRequest from './components/PasswordResetRequest';
 import PasswordReset from './components/PasswordReset';
 import ChatApp from './components/ChatApp';
-import GroupManagement from './components/GroupManagement'; // Import GroupManagement component
+import GroupManagement from './components/GroupManagement';
 import './styles.css';
 import axios from 'axios';
 import { ToastContainer } from 'react-toastify';
@@ -21,6 +21,7 @@ function App() {
   const { authState, setAuthState } = useAuth();
   const socket = useSocket();
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -114,13 +115,16 @@ function App() {
         <div className="App">
           <nav className="nav-bar">
             <h1 className="app-name">SafetyNet</h1>
-            <ul className="nav-list">
-              <li><Link to="/">Home</Link></li>
-              {!authState.isAuthenticated && <li><Link to="/register">Register</Link></li>}
-              {!authState.isAuthenticated && <li><Link to="/login">Login</Link></li>}
-              {authState.isAuthenticated && <li><Link to="/profile">Profile</Link></li>}
-              {authState.isAuthenticated && <li><Link to="/groups">Groups</Link></li>}
-              {authState.isAuthenticated && <li onClick={logout}>Logout</li>}
+            <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
+              ☰
+            </button>
+            <ul className={`nav-list ${menuOpen ? 'open' : ''}`}>
+              <li><Link to="/" onClick={() => setMenuOpen(false)}>Home</Link></li>
+              {!authState.isAuthenticated && <li><Link to="/register" onClick={() => setMenuOpen(false)}>Register</Link></li>}
+              {!authState.isAuthenticated && <li><Link to="/login" onClick={() => setMenuOpen(false)}>Login</Link></li>}
+              {authState.isAuthenticated && <li><Link to="/profile" onClick={() => setMenuOpen(false)}>Profile</Link></li>}
+              {authState.isAuthenticated && <li><Link to="/groups" onClick={() => setMenuOpen(false)}>Groups</Link></li>}
+              {authState.isAuthenticated && <li><button className="btn-link logout" onClick={() => { logout(); setMenuOpen(false); }}>Logout</button></li>}
             </ul>
           </nav>
           <div className="container">
