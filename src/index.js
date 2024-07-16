@@ -7,7 +7,8 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { SocketProvider } from './contexts/SocketContext';
-import { ChatProvider } from './contexts/ChatContext'; // New import
+import { ChatProvider } from './contexts/ChatContext';
+import { EmergencyAlertProvider } from './contexts/EmergencyAlertContext'; // New import
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -15,9 +16,11 @@ root.render(
     <Router>
       <AuthProvider>
         <SocketProvider>
-          <ChatProvider>
-            <AppWrapper />
-          </ChatProvider>
+          <EmergencyAlertProvider>
+            <ChatProvider>
+              <AppWrapper />
+            </ChatProvider>
+          </EmergencyAlertProvider>
         </SocketProvider>
       </AuthProvider>
     </Router>

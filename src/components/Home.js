@@ -26,19 +26,19 @@ const Home = () => {
   const { authState } = useAuth();
   const socket = useSocket();
   const { isChatEnabled } = useContext(ChatContext);
+  const { triggerAlert } = useEmergencyAlert();
   const currentUser = authState.user;
   const [currentLocation, setCurrentLocation] = useState(null);
   const [locationShared, setLocationShared] = useState(false);
   const [nearbyUsers, setNearbyUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [unreadMessages, setUnreadMessages] = useState({});
+  const [messages, setMessages] = useState([]);
 
   const locationWatcherRef = useRef(null);
   const sharingTimeoutRef = useRef(null);
   const mapRef = useRef(null);
   const chatInputRef = useRef(null);
-
-  const { triggerAlert } = useEmergencyAlert();
 
   const reconnectSocket = useCallback(() => {
     if (socket && !socket.connected) {
@@ -84,7 +84,7 @@ const Home = () => {
     }
   }, [authState.token, socket]);
 
-  const requestLocation = useCallback(async (duration, retryCount = 3, userInitiated = true) => {
+  const requestLocation = useCallback(async (retryCount = 3) => {
     const getPosition = (retryCount, delay) => {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
@@ -96,9 +96,7 @@ const Home = () => {
           await updateLocation(latitude, longitude);
           await updateLocationHidden(false); // Make the user visible again
 
-          if (userInitiated) {
-            toast.success('Location acquired successfully.');
-          }
+          toast.success('Location acquired successfully.');
         },
         (err) => {
           console.error('Geolocation error:', err);
@@ -106,9 +104,7 @@ const Home = () => {
             console.log(`Retrying... (${retryCount} attempts left)`);
             setTimeout(() => getPosition(retryCount - 1, delay * 2), delay); // Exponential backoff
           } else {
-            if (userInitiated) {
-              toast.error('Failed to acquire location. Please try again later.');
-            }
+            toast.error('Failed to acquire location. Please try again later.');
           }
         },
         {
@@ -121,24 +117,8 @@ const Home = () => {
 
     if (navigator.geolocation) {
       getPosition(retryCount, 1000);
-      if (duration > 0) {
-        sharingTimeoutRef.current = setTimeout(() => {
-          const watcherRef = locationWatcherRef.current;
-          if (watcherRef) {
-            navigator.geolocation.clearWatch(watcherRef);
-          }
-          setLocationShared(false);
-          localStorage.setItem('locationShared', false);
-          if (userInitiated) {
-            alert('Location sharing has ended.');
-          }
-          updateLocationHidden(true); // Hide the user again
-        }, duration * 1000);
-      }
     } else {
-      if (userInitiated) {
-        alert('Geolocation is not supported by this browser.');
-      }
+      alert('Geolocation is not supported by this browser.');
     }
   }, [updateLocation, updateLocationHidden]);
 
@@ -177,7 +157,7 @@ const Home = () => {
     }
 
     if (savedLocationShared) {
-      requestLocation(0, 3, false); // Initial load should not show user messages
+      fetchNearbyUsers(); // Initial load should not show user messages
     }
 
     const currentWatcherRef = locationWatcherRef.current;
@@ -191,7 +171,7 @@ const Home = () => {
         clearTimeout(currentSharingTimeoutRef);
       }
     };
-  }, [requestLocation]);
+  }, [fetchNearbyUsers]);
 
   useEffect(() => {
     const fetchUnreadMessages = async () => {
@@ -215,6 +195,13 @@ const Home = () => {
 
     fetchUnreadMessages();
 
+    const handleEmergencyAlert = (data) => {
+      toast.error(`Emergency alert from ${data.userName}`);
+      if (mapRef.current && data.lat && data.lng) {
+        mapRef.current.setView([data.lat, data.lng], 13);
+      }
+    };
+
     if (socket) {
       socket.on('connect', () => {
         fetchUnreadMessages(); // Fetch unread messages on socket connection
@@ -235,6 +222,8 @@ const Home = () => {
             [message.sender]: (prevUnreadMessages[message.sender] || 0) + 1
           }));
         } else {
+          // Update chat messages
+          setMessages((prevMessages) => [...prevMessages, message]);
           // Mark message as read in the backend
           try {
             await axios.put(`https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/messages/mark-read/${message.sender}`, {}, {
@@ -249,6 +238,7 @@ const Home = () => {
       });
 
       socket.on('locationUpdated', fetchNearbyUsers); // Fetch nearby users on location update
+      socket.on('emergencyAlert', handleEmergencyAlert);
 
       return () => {
         socket.off('connect');
@@ -256,6 +246,7 @@ const Home = () => {
         socket.off('nearbyUsersUpdate');
         socket.off('receiveMessage');
         socket.off('locationUpdated');
+        socket.off('emergencyAlert', handleEmergencyAlert);
       };
     }
   }, [socket, authState.token, selectedUser, fetchNearbyUsers, reconnectSocket]);
@@ -290,6 +281,24 @@ const Home = () => {
       // Focus on the chat input field
       if (chatInputRef.current) {
         chatInputRef.current.focus();
+      }
+
+      // Center the map on the selected user's location
+      if (mapRef.current && user.location && user.location.coordinates) {
+        mapRef.current.setView([user.location.coordinates[1], user.location.coordinates[0]], 13);
+      }
+
+      // Fetch chat messages
+      try {
+        const res = await axios.get(`https://safety-net-innov8r-1f5b89760363.herokuapp.com/api/messages`, {
+          params: { senderId: currentUser._id, receiverId: user._id },
+          headers: {
+            'Authorization': `Bearer ${authState.token}`
+          }
+        });
+        setMessages(res.data);
+      } catch (err) {
+        console.error('Error fetching messages:', err);
       }
     }
   };
@@ -347,7 +356,7 @@ const Home = () => {
               </button>
             )}
             {!locationShared && (
-              <button onClick={() => requestLocation(0, 3, true)} className="wide-btn share-location-btn">
+              <button onClick={() => requestLocation()} className="wide-btn share-location-btn">
                 Share Location
               </button>
             )}
@@ -379,6 +388,7 @@ const Home = () => {
             <Chat 
               currentUser={currentUser} 
               selectedUser={selectedUser} 
+              messages={messages} // Pass messages as a prop
               onClose={() => setSelectedUser(null)} 
               inputRef={chatInputRef}
             />

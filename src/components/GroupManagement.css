@@ -1,0 +1,216 @@
+/* General styling for the page */
+.group-management {
+  max-width: 800px;
+  margin: 80px auto 0; /* Margin at the top to avoid navbar */
+  padding: 20px;
+  background: #1e1e1e; /* Dark background */
+  color: #ffffff; /* White text */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center; /* Center align text */
+}
+
+/* Header styling */
+.app-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.app-header h1 {
+  font-size: 2em;
+  margin: 0;
+  color: #ffffff;
+}
+
+/* Form styling */
+.group-form,
+.add-user-form {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center align form elements */
+}
+
+.group-form input,
+.add-user-form input {
+  width: calc(100% - 40px);
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background: #333;
+  color: #fff;
+}
+
+.group-form button,
+.add-user-form button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.group-form button:hover,
+.add-user-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Group list styling */
+.group-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center align list */
+}
+
+.group-list .group-item {
+  width: 100%; /* Ensure the list items take full width */
+  max-width: 400px; /* Add a max-width for better readability */
+  padding: 10px;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  color: #ffffff;
+  display: flex;
+  justify-content: space-between; /* Ensure proper spacing between elements */
+  align-items: center; /* Align items vertically in the center */
+}
+
+.group-list .group-item:hover {
+  background-color: #3a3a3a;
+}
+
+.group-list .group-name {
+  flex-grow: 1; /* Allow the group name to take up the remaining space */
+  text-align: left; /* Align text to the left */
+}
+
+.group-list .delete-group-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-left: 10px; /* Add margin to the left of the button */
+}
+
+.group-list .delete-group-btn:hover {
+  background-color: #c82333;
+}
+
+/* Styling for add user form */
+.add-user-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center align form elements */
+}
+
+.add-user-form input {
+  width: calc(100% - 40px);
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background: #333;
+  color: #fff;
+}
+
+.add-user-form button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.add-user-form button:hover {
+  background-color: #218838;
+}
+
+/* Group members list styling */
+.group-members {
+  list-style-type: none;
+  padding: 0;
+  margin: 20px 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center align list */
+}
+
+.group-members .group-member-item {
+  width: 100%; /* Ensure the list items take full width */
+  max-width: 400px; /* Add a max-width for better readability */
+  padding: 10px;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between; /* Ensure proper spacing between elements */
+  align-items: center; /* Align items vertically in the center */
+}
+
+.group-members .chat-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-left: 10px; /* Add margin to the left of the button */
+}
+
+.group-members .chat-btn:hover {
+  background-color: #0056b3;
+}
+
+.group-members .remove-user-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-left: 10px; /* Add margin to the left of the button */
+}
+
+.group-members .remove-user-btn:hover {
+  background-color: #c82333;
+}
+
+/* Group details styling */
+.group-details {
+  margin-top: 20px;
+}
+
+/* Loading and error message styling */
+.loading,
+.error {
+  margin: 20px 0;
+  padding: 10px;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.loading {
+  background-color: #ffc107;
+  color: #1e1e1e;
+}
+
+.error {
+  background-color: #dc3545;
+  color: white;
+}

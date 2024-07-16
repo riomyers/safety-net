@@ -20,17 +20,19 @@ export const EmergencyAlertProvider = ({ children }) => {
 
   useEffect(() => {
 	if (socket && authState.user) {
-	  socket.on('emergencyAlert', (data) => {
+	  const handleEmergencyAlert = (data) => {
 		if (data.userId !== authState.user._id) {
-		  console.log('Emergency alert received:', data);  // Debug log
+		  console.log('Emergency alert received:', data);
 		  alertSound.play().catch(error => console.error('Error playing alert sound:', error));
 		  setCurrentLocation({ lat: data.lat, lng: data.lng });
 		  setAlertMessage(`Emergency alert from user: ${data.userName}`);
 		}
-	  });
+	  };
+
+	  socket.on('emergencyAlert', handleEmergencyAlert);
 
 	  return () => {
-		socket.off('emergencyAlert');
+		socket.off('emergencyAlert', handleEmergencyAlert);
 	  };
 	}
   }, [socket, alertSound, authState.user]);
@@ -40,7 +42,7 @@ export const EmergencyAlertProvider = ({ children }) => {
 	  navigator.geolocation.getCurrentPosition(
 		(position) => {
 		  const { latitude, longitude } = position.coords;
-		  console.log('Geolocation position:', position);  // Debug log
+		  console.log('Geolocation position:', position);
 		  setCurrentLocation({ lat: latitude, lng: longitude });
 		  socket.emit('emergencyAlert', {
 			userId: authState.user._id,
@@ -91,7 +93,7 @@ export const EmergencyAlertProvider = ({ children }) => {
   }, [authState.user, socket, alertSound]);
 
   const handleCloseAlert = () => {
-	console.log('Closing alert:', alertMessage);  // Debug log
+	console.log('Closing alert:', alertMessage);
 	setAlertMessage(null);
   };
 

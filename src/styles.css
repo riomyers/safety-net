@@ -13,29 +13,32 @@ body {
   font-size: 16px;
 }
 
-input{
+input {
   width: 100%;
 }
 
 .app-name {
-  margin-top: 69px;
+  font-size: 1.5em; /* Smaller font size */
+  color: #e0e0e0;
+  margin: 0;
 }
 
-.nearbyusers .btn{
-	background-color: #121212;
+.nearbyusers .btn {
+  background-color: #121212;
 }
 
 .nearbyusers ul {
-	list-style: none;
+  list-style: none;
 }
 
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start; /* Adjust to avoid intro text being hidden */
   min-height: 100vh;
   padding: 20px;
+  margin-top: 80px; /* Add margin to avoid being hidden behind the nav bar */
 }
 
 button {
@@ -57,6 +60,8 @@ p {
   margin: 10px 0;
   font-size: 16px;
   text-align: center;
+  max-width: 100%; /* Ensure the text doesn't overflow */
+  word-wrap: break-word; /* Ensure long words break to the next line */
 }
 
 /* Location sharing specific styles */
@@ -92,17 +97,18 @@ h1 {
   margin-bottom: 20px;
   text-align: center;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
 }
 
 /* Navigation bar styles */
 .nav-bar {
   width: 100%;
   background-color: #1e1e1e;
-  padding: 15px 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Adding a slight shadow to the nav bar */
+  padding: 10px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   position: fixed;
   top: 0;
-  z-index: 1000;
+  z-index: 9999; /* Increased z-index */
 }
 
 .nav-list {
@@ -120,34 +126,31 @@ h1 {
 .nav-list a, .btn.btn-link {
   color: #e0e0e0;
   text-decoration: none;
-  font-size: 18px; /* Increased font size */
-  font-weight: bold; /* Bold font weight */
-  padding: 10px 20px; /* Added padding */
-  transition: color 0.3s ease, background-color 0.3s ease; /* Removed transform transition */
-  border-radius: 4px; /* Rounded corners */
+  font-size: 18px;
+  font-weight: bold;
+  padding: 10px 20px;
+  transition: color 0.3s ease, background-color 0.3s ease;
+  border-radius: 4px;
   position: relative;
 }
 
 .nav-list a:hover, .btn.btn-link:hover {
   color: #9e9e9e;
-  background-color: #333; /* Added background color on hover */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle box shadow on hover */
+  background-color: #333;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Active state indicator */
 .nav-list a.active, .btn.btn-link.active {
   background-color: #333;
   color: #ffffff;
   border-bottom: 2px solid #007bff;
 }
 
-/* Accessibility improvements */
 .nav-list a:focus, .btn.btn-link:focus {
   outline: none;
   box-shadow: 0 0 0 2px #007bff;
 }
 
-/* Improved button styles */
 .btn.btn-link {
   background: none;
   border: none;
@@ -156,7 +159,7 @@ h1 {
   font-weight: bold;
   color: #e0e0e0;
   padding: 10px 20px;
-  transition: color 0.3s ease, background-color 0.3s ease; /* Removed transform transition */
+  transition: color 0.3s ease, background-color 0.3s ease;
   border-radius: 4px;
   position: relative;
 }

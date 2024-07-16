@@ -7,6 +7,7 @@ import Profile from './components/Profile';
 import PasswordResetRequest from './components/PasswordResetRequest';
 import PasswordReset from './components/PasswordReset';
 import ChatApp from './components/ChatApp';
+import GroupManagement from './components/GroupManagement'; // Import GroupManagement component
 import './styles.css';
 import axios from 'axios';
 import { ToastContainer } from 'react-toastify';
@@ -112,11 +113,13 @@ function App() {
       <EmergencyAlertProvider>
         <div className="App">
           <nav className="nav-bar">
+            <h1 className="app-name">SafetyNet</h1>
             <ul className="nav-list">
               <li><Link to="/">Home</Link></li>
               {!authState.isAuthenticated && <li><Link to="/register">Register</Link></li>}
               {!authState.isAuthenticated && <li><Link to="/login">Login</Link></li>}
               {authState.isAuthenticated && <li><Link to="/profile">Profile</Link></li>}
+              {authState.isAuthenticated && <li><Link to="/groups">Groups</Link></li>}
               {authState.isAuthenticated && <li onClick={logout}>Logout</li>}
             </ul>
           </nav>
@@ -127,6 +130,7 @@ function App() {
               {!authState.isAuthenticated && <Route path="/login" element={<Login />} />}
               {authState.isAuthenticated && <Route path="/profile" element={<Profile currentUser={authState.user} />} />}
               {authState.isAuthenticated && <Route path="/chat/*" element={<ChatApp currentUser={authState.user} />} />}
+              {authState.isAuthenticated && <Route path="/groups" element={<GroupManagement />} />}
               <Route path="/reset-password-request" element={<PasswordResetRequest />} />
               <Route path="/reset-password/:token" element={<PasswordReset />} />
               <Route path="*" element={<Navigate to={authState.isAuthenticated ? "/" : "/login"} />} />
